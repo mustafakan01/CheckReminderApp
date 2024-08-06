@@ -1,20 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './HomeScreen';
+import AddCheckScreen from './AddCheckScreen';
+
+const Stack = createStackNavigator();
 
 export default function App() {
+  const [checkList, setCheckList] = useState([
+
+  ]);
+
+  const addCheck = (check) => {
+    const newCheck = { id: String(checkList.length + 1), ...check };
+    setCheckList([...checkList, newCheck]);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home">
+          {(props) => <HomeScreen {...props} checkList={checkList} />}
+        </Stack.Screen>
+        <Stack.Screen name="AddCheck">
+          {(props) => <AddCheckScreen {...props} addCheck={addCheck} />}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
