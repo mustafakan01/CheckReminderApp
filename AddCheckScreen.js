@@ -5,11 +5,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 export default function AddCheckScreen({ navigation, addCheck }) {
   const [amount, setAmount] = useState('');
   const [dueDate, setDueDate] = useState(new Date());
+  const [companyName, setCompanyName] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleAddCheck = () => {
-    if (amount && dueDate) {
-      addCheck({ amount: parseFloat(amount.replace('.', '')), dueDate: dueDate.toISOString().split('T')[0] });
+    if (amount && dueDate && companyName) {
+      const formattedAmount = parseFloat(amount.replace(/\./g, ''));
+      addCheck({ amount: formattedAmount, dueDate: dueDate.toISOString().split('T')[0], companyName });
       navigation.goBack();
     }
   };
@@ -21,7 +23,9 @@ export default function AddCheckScreen({ navigation, addCheck }) {
   };
 
   const formatAmount = (value) => {
-    return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    let cleanValue = value.replace(/\D/g, '');
+    let formattedValue = cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return formattedValue;
   };
 
   return (
@@ -32,6 +36,12 @@ export default function AddCheckScreen({ navigation, addCheck }) {
         value={amount}
         onChangeText={(value) => setAmount(formatAmount(value))}
         keyboardType="numeric"
+      />
+      <Text>Şirket Adı:</Text>
+      <TextInput
+        style={styles.input}
+        value={companyName}
+        onChangeText={setCompanyName}
       />
       <Text>Vade Tarihi:</Text>
       <Button onPress={() => setShowDatePicker(true)} title={dueDate.toDateString()} />
