@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Button, Alert } from 'react-native';
-import EditCheckModal from './EditCheckModal';
+import EditCheckModal from './EditCheckModal'; // Bu satırın doğru olduğundan emin olun
 
 export default function HomeScreen({ navigation, checkList, setCheckList }) {
   const [selectedCheck, setSelectedCheck] = useState(null);
